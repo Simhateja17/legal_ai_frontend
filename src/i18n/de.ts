@@ -1,0 +1,63 @@
+const de = {
+  app: {
+    title: 'Rechts-KI Assistent',
+  },
+  nav: {
+    chat: 'Chat',
+    search: 'Suche',
+    health: 'Status',
+    settings: 'Einstellungen',
+    newChat: 'Neuer Chat',
+  },
+  chat: {
+    placeholder: 'Stellen Sie Ihre rechtliche Frage...',
+    send: 'Senden',
+    stop: 'Stoppen',
+    empty: 'Stellen Sie eine Frage zum deutschen Recht.',
+    sources: 'Quellen',
+    thinking: 'Denkt nach...',
+    error: 'Fehler beim Generieren der Antwort.',
+  },
+  search: {
+    placeholder: 'Suchbegriff eingeben...',
+    button: 'Suchen',
+    empty: 'Geben Sie einen Suchbegriff ein, um relevante Dokumente zu finden.',
+    noResults: 'Keine Ergebnisse gefunden.',
+    results: 'Ergebnisse',
+    similarity: 'Ähnlichkeit',
+    source: 'Quelle',
+    error: 'Fehler bei der Suche.',
+  },
+  health: {
+    title: 'Systemstatus',
+    overall: 'Gesamtstatus',
+    database: 'Datenbank',
+    llmProvider: 'LLM-Anbieter',
+    connected: 'Verbunden',
+    disconnected: 'Getrennt',
+    ok: 'OK',
+    degraded: 'Eingeschränkt',
+    unknown: 'Unbekannt',
+    lastCheck: 'Letzte Prüfung',
+    autoRefresh: 'Automatische Aktualisierung alle 30 Sekunden',
+    error: 'Status konnte nicht abgerufen werden.',
+  },
+  settings: {
+    title: 'Einstellungen',
+    topK: 'Anzahl Ergebnisse (top_k)',
+    topKDesc: 'Maximale Anzahl der zurückgegebenen Dokumente.',
+    threshold: 'Ähnlichkeitsschwelle',
+    thresholdDesc: 'Mindest-Ähnlichkeitswert für die Ergebnisse (0 = alle, 1 = exakt).',
+    provider: 'LLM-Anbieter',
+    providerDesc: 'Wird vom Backend festgelegt und kann hier nicht geändert werden.',
+    saved: 'Einstellungen gespeichert.',
+  },
+  common: {
+    loading: 'Laden...',
+    error: 'Ein Fehler ist aufgetreten.',
+    expand: 'Mehr anzeigen',
+    collapse: 'Weniger anzeigen',
+  },
+} as const;
+
+export default de;
