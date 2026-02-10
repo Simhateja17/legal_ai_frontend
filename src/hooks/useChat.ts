@@ -20,7 +20,7 @@ interface ChatState {
  * Fix OCR-broken German words using a dictionary of known broken patterns.
  * Only targets specific word patterns that OCR commonly splits.
  */
-const OCR_FIXES: [RegExp, string][] = [
+const OCR_FIXES: [RegExp, string | ((m: string) => string)][] = [
   // Legal compound words
   [/\bstraf\s*recht\s*lich\s*e?n?\b/gi, (m: string) => m.replace(/\s+/g, '')],
   [/\bHaft\s+ung\b/gi, 'Haftung'],
