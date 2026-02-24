@@ -9,6 +9,7 @@ export interface ChatRequest {
   top_k?: number | null;
   similarity_threshold?: number | null;
   metadata_filter?: Record<string, unknown> | null;
+  mode?: 'normal' | 'student' | 'lawyer';
 }
 
 export interface SearchRequest {

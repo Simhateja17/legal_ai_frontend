@@ -21,9 +21,13 @@ interface ChatState {
  * Handles "** text **" → "**text**" and "1 ." → "1."
  */
 function fixMarkdown(text: string): string {
-  return text
-    .replace(/\*\*\s+(.+?)\s+\*\*/g, '**$1**')
-    .replace(/(\d+)\s+\./g, '$1.');
+  // Fix bold markers with inner spaces (handles multi-line): "** text **" → "**text**"
+  text = text.replace(/\*\*\s+([\s\S]+?)\s+\*\*/g, '**$1**');
+  // Fix broken list: digit-dot on own line, bold label on next line
+  text = text.replace(/^(\d+)\.\s*\n\*\*(.+?)\*\*(\s*:?)/gm, '$1. **$2**$3');
+  // Fix numbered list items with extra spaces: "1 ." → "1."
+  text = text.replace(/(\d+)\s+\./g, '$1.');
+  return text;
 }
 
 export function useChat() {
@@ -60,6 +64,7 @@ export function useChat() {
           conversation_history: history,
           top_k: settings.topK,
           similarity_threshold: settings.similarityThreshold,
+          mode: settings.mode,
         },
         {
           onToken(token) {
@@ -104,7 +109,7 @@ export function useChat() {
 
       abortRef.current = controller;
     },
-    [state.messages, state.streaming, settings.topK, settings.similarityThreshold],
+    [state.messages, state.streaming, settings.topK, settings.similarityThreshold, settings.mode],
   );
 
   const stop = useCallback(() => {

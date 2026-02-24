@@ -52,6 +52,32 @@ export default function SettingsPage() {
           </div>
         </div>
 
+        {/* Mode selector */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700">{t.mode}</label>
+          <p className="mt-1 text-xs text-gray-500">{t.modeDesc}</p>
+          <div className="mt-3 grid grid-cols-3 gap-3">
+            {([
+              { value: 'normal', label: t.modeNormal, desc: t.modeNormalDesc },
+              { value: 'student', label: t.modeStudent, desc: t.modeStudentDesc },
+              { value: 'lawyer', label: t.modeLawyer, desc: t.modeLawyerDesc },
+            ] as const).map(({ value, label, desc }) => (
+              <button
+                key={value}
+                onClick={() => update({ mode: value })}
+                className={`rounded-lg border-2 p-3 text-left transition-colors ${
+                  settings.mode === value
+                    ? 'border-blue-500 bg-blue-50 text-blue-900'
+                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <div className="font-medium text-sm">{label}</div>
+                <div className="mt-1 text-xs text-gray-500">{desc}</div>
+              </button>
+            ))}
+          </div>
+        </div>
+
         {/* LLM provider badge (read-only) */}
         <div>
           <label className="block text-sm font-medium text-gray-700">{t.provider}</label>

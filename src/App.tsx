@@ -35,6 +35,7 @@ export default function App() {
   const [settings, setSettings] = useState<Settings>(() => ({
     topK: getItem('topK', DEFAULTS.topK),
     similarityThreshold: getItem('similarityThreshold', DEFAULTS.similarityThreshold),
+    mode: getItem('mode', DEFAULTS.mode),
   }));
 
   const update = useCallback((patch: Partial<Settings>) => {
@@ -42,6 +43,7 @@ export default function App() {
       const next = { ...prev, ...patch };
       if (patch.topK !== undefined) setItem('topK', next.topK);
       if (patch.similarityThreshold !== undefined) setItem('similarityThreshold', next.similarityThreshold);
+      if (patch.mode !== undefined) setItem('mode', next.mode);
       return next;
     });
   }, []);
