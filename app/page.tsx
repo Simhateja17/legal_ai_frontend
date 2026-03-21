@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef } from "react";
+import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import ChatArea, { Message } from "@/components/ChatArea";
 import MessageInput from "@/components/MessageInput";
@@ -134,7 +135,25 @@ function HomeInner() {
               <path d="M3 12h18M3 6h18M3 18h18" />
             </svg>
           </button>
-          <span className="text-sm font-semibold" style={{ color: "#1a1a2e" }}>
+          <Image
+            src="/logo.png"
+            alt="Legal AI Logo"
+            width={28}
+            height={28}
+            className="object-contain"
+          />
+          <span
+            style={{
+              fontFamily: "'Frank Ruhl Libre', serif",
+              fontWeight: 700,
+              fontSize: "16px",
+              color: "#1a1a2e",
+              letterSpacing: "-0.3px",
+            }}
+          >
+            legal ai
+          </span>
+          <span className="ml-auto text-xs font-medium px-2 py-1 rounded-md" style={{ color: "#7a8a9a", background: "#f3f4f6" }}>
             {currentPage}
           </span>
         </div>
