@@ -15,6 +15,7 @@ function HomeInner() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState("Chat");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const { settings } = useAppSettings();
   const assistantMsgIdRef = useRef<string | null>(null);
 
@@ -96,26 +97,54 @@ function HomeInner() {
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
+    setSidebarOpen(false);
   };
 
   return (
     <div
-      className="flex h-screen overflow-hidden"
+      className="flex h-screen overflow-hidden relative"
       style={{ background: "#ffffff" }}
     >
-      {/* Sidebar */}
-      <Sidebar activePage={currentPage} onNavigate={handleNavigate} onNewChat={handleNewChat} />
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black/30 z-30 md:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar — hidden on mobile unless open */}
+      <div className={`
+        fixed inset-y-0 left-0 z-40 transform transition-transform duration-200 ease-in-out
+        md:relative md:translate-x-0
+        ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
+      `}>
+        <Sidebar activePage={currentPage} onNavigate={handleNavigate} onNewChat={handleNewChat} />
+      </div>
 
       {/* Main content */}
-      <main className="flex flex-col flex-1 overflow-hidden">
+      <main className="flex flex-col flex-1 overflow-hidden min-w-0">
+        {/* Mobile header bar */}
+        <div className="flex items-center gap-3 px-4 py-3 md:hidden border-b border-gray-100">
+          <button
+            onClick={() => setSidebarOpen(true)}
+            className="p-2 rounded-lg hover:bg-gray-100"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M3 12h18M3 6h18M3 18h18" />
+            </svg>
+          </button>
+          <span className="text-sm font-semibold" style={{ color: "#1a1a2e" }}>
+            {currentPage}
+          </span>
+        </div>
+
         {currentPage === "Chat" && (
           <>
-            {/* Chat messages */}
             <ChatArea messages={messages} />
 
-            {/* Typing indicator */}
             {loading && (
-              <div className="px-8 pb-2 flex items-center gap-3">
+              <div className="px-4 sm:px-8 pb-2 flex items-center gap-3">
                 <div className="flex gap-1.5">
                   {[0, 1, 2].map((i) => (
                     <span
@@ -134,7 +163,6 @@ function HomeInner() {
               </div>
             )}
 
-            {/* Input */}
             <MessageInput onSend={handleSend} loading={loading} />
           </>
         )}

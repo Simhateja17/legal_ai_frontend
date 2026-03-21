@@ -39,9 +39,9 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-12 flex flex-col gap-10">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-8 md:px-12 py-6 sm:py-12 flex flex-col gap-8 sm:gap-10">
       {/* Header */}
-      <h1 className="text-4xl font-bold" style={{ color: "#1a1a2e" }}>
+      <h1 className="text-2xl sm:text-4xl font-bold" style={{ color: "#1a1a2e" }}>
         Settings
       </h1>
 
@@ -122,7 +122,7 @@ export default function SettingsPage() {
             Adapt the style of your answers to your target audience.
           </p>
         </div>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {modes.map((m) => (
             <button
               key={m.key}

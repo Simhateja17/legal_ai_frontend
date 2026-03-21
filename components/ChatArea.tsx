@@ -23,13 +23,13 @@ export default function ChatArea({ messages }: ChatAreaProps) {
   }, [messages]);
 
   return (
-    <div className="flex-1 overflow-y-auto px-8 py-8 flex flex-col gap-6">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 sm:py-8 flex flex-col gap-4 sm:gap-6">
       {messages.map((msg) =>
         msg.role === "user" ? (
           /* ── User bubble ─────────────────────────────────────────── */
           <div key={msg.id} className="flex justify-end items-start gap-3">
             <div
-              className="flex items-center gap-3 px-6 py-4 max-w-[68%]"
+              className="flex items-center gap-3 px-4 sm:px-6 py-3 sm:py-4 max-w-[85%] sm:max-w-[68%]"
               style={{
                 background: "#95DE64",
                 borderRadius: "30px",
@@ -70,7 +70,7 @@ export default function ChatArea({ messages }: ChatAreaProps) {
               />
             </div>
             <div
-              className="px-6 py-5 max-w-[68%]"
+              className="px-4 sm:px-6 py-4 sm:py-5 max-w-[85%] sm:max-w-[68%]"
               style={{
                 background: "#333332",
                 borderRadius: "30px",

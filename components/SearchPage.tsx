@@ -43,7 +43,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto px-8 py-10">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-8 py-6 sm:py-10">
       {/* Header */}
       <div className="max-w-3xl mx-auto mb-8">
         <h1
@@ -61,11 +61,10 @@ export default function SearchPage() {
       {/* Search bar */}
       <div className="max-w-3xl mx-auto mb-8">
         <div
-          className="flex items-center gap-3 px-5"
+          className="flex items-center gap-3 px-4 sm:px-5 w-full"
           style={{
-            width: "762px",
-            maxWidth: "100%",
-            height: "64px",
+            maxWidth: "762px",
+            height: "56px",
             border: "2px solid #D3F2B6",
             borderRadius: "18px",
             background: "#ffffff",

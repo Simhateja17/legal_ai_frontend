@@ -37,12 +37,11 @@ export default function MessageInput({ onSend, loading }: MessageInputProps) {
   };
 
    return (
-     <div className="px-8 pb-8 pt-2 flex justify-center">
+     <div className="px-3 sm:px-8 pb-4 sm:pb-8 pt-2 flex justify-center">
        <div
-         className="flex items-center gap-3 px-5"
+         className="flex items-center gap-3 px-4 sm:px-5 w-full max-w-[762px]"
          style={{
-           width: "762px",
-           height: "64px",
+           height: "56px",
            background: "rgba(253,255,246,0.5)",
            borderRadius: "30px",
            border: "3px solid #000000",

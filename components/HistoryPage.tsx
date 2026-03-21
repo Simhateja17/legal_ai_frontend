@@ -35,9 +35,9 @@ export default function HistoryPage() {
   ];
 
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-12 flex flex-col gap-8">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-8 md:px-12 py-6 sm:py-12 flex flex-col gap-6 sm:gap-8">
       {/* Header */}
-      <h1 className="text-4xl font-bold" style={{ color: "#1a1a2e" }}>
+      <h1 className="text-2xl sm:text-4xl font-bold" style={{ color: "#1a1a2e" }}>
         History
       </h1>
 

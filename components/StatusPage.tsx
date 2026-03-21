@@ -40,10 +40,10 @@ export default function StatusPage() {
     ["OK", "Connected"].includes(val) || val === val.toUpperCase();
 
   return (
-    <div className="flex-1 overflow-y-auto px-12 py-12 flex flex-col gap-10">
+    <div className="flex-1 overflow-y-auto px-4 sm:px-8 md:px-12 py-6 sm:py-12 flex flex-col gap-8 sm:gap-10">
       {/* Header with Update Button */}
       <div className="flex items-center justify-between">
-        <h1 className="text-4xl font-bold" style={{ color: "#1a1a2e" }}>
+        <h1 className="text-2xl sm:text-4xl font-bold" style={{ color: "#1a1a2e" }}>
           System status
         </h1>
         <button
@@ -65,7 +65,7 @@ export default function StatusPage() {
       </div>
 
       {/* Status Cards */}
-      <div className="grid grid-cols-3 gap-6 max-w-4xl">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 max-w-4xl">
         {/* Overall Status */}
         <div
           className="p-6 rounded-xl border"
