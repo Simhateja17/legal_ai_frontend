@@ -15,6 +15,14 @@ interface ChatAreaProps {
   messages: Message[];
 }
 
+function fixMarkdown(text: string): string {
+  // Fix bold markers with inner spaces: "** text **" → "**text**"
+  text = text.replace(/\*\*\s+([\s\S]+?)\s+\*\*/g, "**$1**");
+  // Fix numbered list formatting: "1 ." → "1."
+  text = text.replace(/(\d+)\s+\./g, "$1.");
+  return text;
+}
+
 export default function ChatArea({ messages }: ChatAreaProps) {
   const bottomRef = useRef<HTMLDivElement>(null);
 
@@ -82,7 +90,7 @@ export default function ChatArea({ messages }: ChatAreaProps) {
                 className="text-sm leading-relaxed prose prose-sm prose-invert max-w-none"
                 style={{ color: "#d4d4c8" }}
               >
-                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                <ReactMarkdown>{fixMarkdown(msg.content)}</ReactMarkdown>
               </div>
             </div>
           </div>
