@@ -135,24 +135,27 @@ function HomeInner() {
               <path d="M3 12h18M3 6h18M3 18h18" />
             </svg>
           </button>
-          <Image
-            src="/logo.png"
-            alt="Legal AI Logo"
-            width={28}
-            height={28}
-            className="object-contain"
-          />
-          <span
-            style={{
-              fontFamily: "'Frank Ruhl Libre', serif",
-              fontWeight: 700,
-              fontSize: "16px",
-              color: "#1a1a2e",
-              letterSpacing: "-0.3px",
-            }}
-          >
-            legal ai
-          </span>
+          <div className="flex items-center gap-2">
+            <Image
+              src="/logo.png"
+              alt="Legal AI Logo"
+              width={28}
+              height={28}
+              className="object-contain"
+            />
+            <span
+              style={{
+                fontFamily: "'Frank Ruhl Libre', serif",
+                fontWeight: 700,
+                fontSize: "16px",
+                color: "#1a1a2e",
+                letterSpacing: "-0.3px",
+                lineHeight: "28px",
+              }}
+            >
+              legal ai
+            </span>
+          </div>
           <span className="ml-auto text-xs font-medium px-2 py-1 rounded-md" style={{ color: "#7a8a9a", background: "#f3f4f6" }}>
             {currentPage}
           </span>
