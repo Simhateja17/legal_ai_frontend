@@ -41,7 +41,7 @@ export default function Sidebar({ activePage, onNavigate, onNewChat }: SidebarPr
       {/* Logo */}
       <div
         className="flex items-center gap-3 px-5 py-5"
-        style={{ borderBottom: "2px solid rgba(211,242,182,0.4)" }}
+        style={{}}
       >
         <Image
           src="/logo.png"

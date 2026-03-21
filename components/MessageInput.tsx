@@ -59,13 +59,13 @@ export default function MessageInput({ onSend, loading }: MessageInputProps) {
            placeholder="Write your message ..."
            disabled={loading}
            className="flex-1 resize-none bg-transparent text-sm outline-none placeholder-gray-400 text-gray-800 leading-relaxed disabled:opacity-50"
-           style={{ maxHeight: "48px", minHeight: "48px" }}
+           style={{ maxHeight: "48px", minHeight: "48px", paddingTop: "14px" }}
          />
 
         {/* Mic */}
         <button
           className="flex-shrink-0 p-1.5 rounded-full transition-colors"
-          style={{ color: "#555" }}
+          style={{ color: "#000000" }}
           onMouseEnter={(e) =>
             (e.currentTarget.style.background = "rgba(149,222,100,0.15)")
           }
@@ -82,7 +82,7 @@ export default function MessageInput({ onSend, loading }: MessageInputProps) {
           onClick={handleSend}
           disabled={!value.trim() || loading}
           className="flex-shrink-0 p-1.5 rounded-full transition-all duration-150 disabled:opacity-40"
-          style={{ color: "#333" }}
+          style={{ color: "#000000" }}
           onMouseEnter={(e) => {
             if (value.trim())
               e.currentTarget.style.background = "rgba(149,222,100,0.2)";

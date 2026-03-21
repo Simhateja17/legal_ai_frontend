@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import { Pencil } from "lucide-react";
 
 export interface Message {
@@ -77,12 +78,12 @@ export default function ChatArea({ messages }: ChatAreaProps) {
                 boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
               }}
             >
-              <p
-                className="text-sm leading-relaxed"
+              <div
+                className="text-sm leading-relaxed prose prose-sm prose-invert max-w-none"
                 style={{ color: "#d4d4c8" }}
               >
-                {msg.content}
-              </p>
+                <ReactMarkdown>{msg.content}</ReactMarkdown>
+              </div>
             </div>
           </div>
         )

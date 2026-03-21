@@ -107,36 +107,52 @@ export async function sendChatStream(
 
     const decoder = new TextDecoder();
     let buffer = "";
+    let currentEvent = "";
+    const dataLines: string[] = [];
+
+    const dispatch = () => {
+      if (!currentEvent && dataLines.length === 0) return;
+      const data = dataLines.join("\n");
+      if (currentEvent === "token") {
+        onToken(data);
+      } else if (currentEvent === "sources") {
+        try {
+          const sources = JSON.parse(data);
+          onSources(sources);
+        } catch {
+          // ignore parse errors
+        }
+      } else if (currentEvent === "done") {
+        onDone();
+      }
+      currentEvent = "";
+      dataLines.length = 0;
+    };
 
     while (true) {
       const { done, value } = await reader.read();
       if (done) break;
 
       buffer += decoder.decode(value, { stream: true });
+      // Normalize \r\n to \n
+      buffer = buffer.replace(/\r\n/g, "\n");
       const lines = buffer.split("\n");
+      // Keep last (possibly incomplete) line in buffer
       buffer = lines.pop() || "";
 
-      let currentEvent = "";
       for (const line of lines) {
-        if (line.startsWith("event:")) {
+        if (line === "") {
+          // Blank line = end of event
+          dispatch();
+        } else if (line.startsWith("event:")) {
           currentEvent = line.slice(6).trim();
         } else if (line.startsWith("data:")) {
-          const data = line.slice(5);
-          if (currentEvent === "token") {
-            onToken(data);
-          } else if (currentEvent === "sources") {
-            try {
-              const sources = JSON.parse(data);
-              onSources(sources);
-            } catch {
-              // ignore parse errors
-            }
-          } else if (currentEvent === "done") {
-            onDone();
-          }
+          dataLines.push(line.slice(5));
         }
       }
     }
+    // Dispatch any remaining event
+    dispatch();
   } catch (err) {
     onError(err instanceof Error ? err.message : "Stream connection failed");
   }
