@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import Image from "next/image";
 import Sidebar from "@/components/Sidebar";
 import ChatArea, { Message } from "@/components/ChatArea";
@@ -11,6 +11,7 @@ import HistoryPage from "@/components/HistoryPage";
 import SearchPage from "@/components/SearchPage";
 import { AppSettingsProvider, useAppSettings } from "@/lib/settingsContext";
 import { sendChatStream } from "@/lib/api";
+import { saveSession, ChatSession } from "@/lib/chatHistory";
 
 function HomeInner() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -19,6 +20,27 @@ function HomeInner() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { settings } = useAppSettings();
   const assistantMsgIdRef = useRef<string | null>(null);
+  const sessionIdRef = useRef<string>(Date.now().toString());
+
+  const persistChat = useCallback((msgs: Message[]) => {
+    // Only save if there are actual messages
+    const nonEmpty = msgs.filter((m) => m.content.trim() && !m.content.startsWith("Error:"));
+    if (nonEmpty.length === 0) return;
+
+    // Use the first user message as title
+    const firstUserMsg = nonEmpty.find((m) => m.role === "user");
+    const title = firstUserMsg
+      ? firstUserMsg.content.slice(0, 80) + (firstUserMsg.content.length > 80 ? "..." : "")
+      : "Chat";
+
+    const session: ChatSession = {
+      id: sessionIdRef.current,
+      title,
+      timestamp: Date.now(),
+      messages: nonEmpty,
+    };
+    saveSession(session);
+  }, []);
 
   const handleSend = async (text: string) => {
     const userMsg: Message = {
@@ -52,6 +74,8 @@ function HomeInner() {
       lawyer: "lawyer",
     };
 
+    let finalMessages: Message[] = [];
+
     await sendChatStream(
       {
         query: text,
@@ -62,18 +86,21 @@ function HomeInner() {
       },
       // onToken: append token to the streaming assistant message
       (token: string) => {
-        setMessages((prev) =>
-          prev.map((m) =>
+        setMessages((prev) => {
+          const updated = prev.map((m) =>
             m.id === aiMsgId ? { ...m, content: m.content + token } : m
-          )
-        );
+          );
+          finalMessages = updated;
+          return updated;
+        });
       },
-      // onSources: could store sources if needed
+      // onSources
       () => {},
-      // onDone
+      // onDone — save to history
       () => {
         setLoading(false);
         assistantMsgIdRef.current = null;
+        persistChat(finalMessages);
       },
       // onError
       (error: string) => {
@@ -94,11 +121,18 @@ function HomeInner() {
     setMessages([]);
     setLoading(false);
     assistantMsgIdRef.current = null;
+    sessionIdRef.current = Date.now().toString();
   };
 
   const handleNavigate = (page: string) => {
     setCurrentPage(page);
     setSidebarOpen(false);
+  };
+
+  const handleLoadSession = (session: ChatSession) => {
+    setMessages(session.messages);
+    sessionIdRef.current = session.id;
+    setCurrentPage("Chat");
   };
 
   return (
@@ -191,7 +225,7 @@ function HomeInner() {
 
         {currentPage === "Settings" && <SettingsPage />}
         {currentPage === "Status" && <StatusPage />}
-        {currentPage === "History" && <HistoryPage />}
+        {currentPage === "History" && <HistoryPage onLoadSession={handleLoadSession} />}
         {currentPage === "Search" && <SearchPage />}
       </main>
     </div>

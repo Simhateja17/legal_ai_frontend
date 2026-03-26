@@ -1,38 +1,25 @@
 "use client";
 
-export default function HistoryPage() {
-  const historySessions = [
-    {
-      id: 1,
-      title: "Commercial lease review",
-      date: "Today, 3:45 PM",
-      messages: 12,
-    },
-    {
-      id: 2,
-      title: "Employment contract analysis",
-      date: "Yesterday, 2:15 PM",
-      messages: 8,
-    },
-    {
-      id: 3,
-      title: "Intellectual property questions",
-      date: "Dec 10, 2024",
-      messages: 15,
-    },
-    {
-      id: 4,
-      title: "Tax compliance inquiry",
-      date: "Dec 8, 2024",
-      messages: 5,
-    },
-    {
-      id: 5,
-      title: "Contract termination discussion",
-      date: "Dec 5, 2024",
-      messages: 9,
-    },
-  ];
+import { useState, useEffect } from "react";
+import { Trash2 } from "lucide-react";
+import { loadHistory, deleteSession, formatDate, ChatSession } from "@/lib/chatHistory";
+
+interface HistoryPageProps {
+  onLoadSession: (session: ChatSession) => void;
+}
+
+export default function HistoryPage({ onLoadSession }: HistoryPageProps) {
+  const [sessions, setSessions] = useState<ChatSession[]>([]);
+
+  useEffect(() => {
+    setSessions(loadHistory());
+  }, []);
+
+  const handleDelete = (e: React.MouseEvent, id: string) => {
+    e.stopPropagation();
+    deleteSession(id);
+    setSessions((prev) => prev.filter((s) => s.id !== id));
+  };
 
   return (
     <div className="flex-1 overflow-y-auto px-4 sm:px-8 md:px-12 py-6 sm:py-12 flex flex-col gap-6 sm:gap-8">
@@ -43,41 +30,54 @@ export default function HistoryPage() {
 
       {/* History list */}
       <div className="max-w-3xl flex flex-col gap-3">
-        {historySessions.map((session) => (
-          <button
-            key={session.id}
-            className="p-4 rounded-xl text-left transition-all duration-150 border"
-            style={{
-              border: "1px solid #e5e7eb",
-              background: "#ffffff",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = "#f9fafb";
-              e.currentTarget.style.borderColor = "#d1d5db";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = "#ffffff";
-              e.currentTarget.style.borderColor = "#e5e7eb";
-            }}
-          >
-            <div className="flex items-start justify-between">
-              <div className="flex-1 min-w-0">
-                <p
-                  className="font-semibold text-lg truncate"
-                  style={{ color: "#1a1a2e" }}
+        {sessions.length === 0 ? (
+          <p className="text-sm" style={{ color: "#9ca3af" }}>
+            No chat history yet. Start a conversation to see it here.
+          </p>
+        ) : (
+          sessions.map((session) => (
+            <button
+              key={session.id}
+              onClick={() => onLoadSession(session)}
+              className="p-4 rounded-xl text-left transition-all duration-150 border group"
+              style={{
+                border: "1px solid #e5e7eb",
+                background: "#ffffff",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "#f9fafb";
+                e.currentTarget.style.borderColor = "#d1d5db";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "#ffffff";
+                e.currentTarget.style.borderColor = "#e5e7eb";
+              }}
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1 min-w-0">
+                  <p
+                    className="font-semibold text-lg truncate"
+                    style={{ color: "#1a1a2e" }}
+                  >
+                    {session.title}
+                  </p>
+                  <p className="text-sm mt-1" style={{ color: "#6b7280" }}>
+                    {formatDate(session.timestamp)}
+                  </p>
+                  <p className="text-xs mt-2" style={{ color: "#9ca3af" }}>
+                    {session.messages.length} messages
+                  </p>
+                </div>
+                <div
+                  className="opacity-0 group-hover:opacity-100 transition-opacity p-1.5 rounded-lg hover:bg-red-50"
+                  onClick={(e) => handleDelete(e, session.id)}
                 >
-                  {session.title}
-                </p>
-                <p className="text-sm mt-1" style={{ color: "#6b7280" }}>
-                  {session.date}
-                </p>
-                <p className="text-xs mt-2" style={{ color: "#9ca3af" }}>
-                  {session.messages} messages
-                </p>
+                  <Trash2 size={16} style={{ color: "#ef4444" }} />
+                </div>
               </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          ))
+        )}
       </div>
     </div>
   );
